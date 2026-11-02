@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Spesial Buat Kamu — Happy Birthday</title>
+  <meta name="description" content="Hadiah ulang tahun romantis dan 8 bulan perjalanan bersama.">
+  <meta name="theme-color" content="#0b0b0e">
+
+  <!-- Favicon Heart SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌼</text></svg>">
+
+  <!-- Google Fonts: Cormorant Garamond (Serif Elegan) & Plus Jakarta Sans (Clean Modern Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="is-locked">
+  <!-- Subtle Grain & Ambient Background Glow -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+  <canvas id="ambientCanvas" class="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Audio Element -->
+  <audio id="bgMusic" preload="auto" loop>
+    <source src="assets/music/song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Floating Audio Controller (Always accessible) -->
+  <div class="audio-controller" id="audioController" aria-label="Kontrol Musik">
+    <button id="audioToggleBtn" class="audio-btn" title="Nyalakan/Matikan Musik" aria-label="Toggle Musik">
+      <span class="audio-waves" id="audioWaves">
+        <span></span><span></span><span></span><span></span>
+      </span>
+      <span class="audio-icon" id="audioIcon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path class="wave wave-1" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path class="wave wave-2" d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          <line class="mute-slash" x1="23" y1="1" x2="1" y2="23"></line>
+        </svg>
+      </span>
+      <span class="audio-tooltip" id="audioTooltip">Musik Nyala</span>
+    </button>
+  </div>
+
+  <!-- ========================================================== -->
+  <!-- STEP 1: INTRO / GATE SCREEN (Full screen, prevents autoplay block) -->
+  <!-- ========================================================== -->
+  <section class="gate-screen" id="gateScreen">
+    <div class="gate-content">
+      <div class="gate-badge">
+        <span class="sparkle">✦</span>
+        <span id="gateBadgeText">Sebuah Hadiah Kecil</span>
+        <span class="sparkle">✦</span>
+      </div>
+
+      <h1 class="gate-title" id="gateTitle">
+        Ada sesuatu buat kamu,<br>
+        <span class="highlight" id="gateRecipientName">Eikel</span>
+      </h1>
+
+      <p class="gate-subtitle" id="gateSubtitle">
+        Delapan bulan cerita kita, dan satu hari yang paling istimewa.
+      </p>
+
+      <div class="gate-action">
+        <button id="openBtn" class="btn-primary" aria-label="Buka Hadiah">
+          <span class="btn-bloom-effect"></span>
+          <span class="btn-text">Buka Pelan-Pelan</span>
+          <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+        <div class="pulse-ring"></div>
+      </div>
+
+      <p class="gate-hint">
+        <span class="hint-icon">🎧</span> Lebih syahdu kalau pakai earphone & volume dinyalakan
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- STEP 2: GERBERA FLOWER BLOOM STAGE (3 Gerberas: White, Black, Yellow) -->
+  <!-- ========================================================== -->
+  <section class="bloom-stage" id="bloomStage" aria-label="Animasi Bunga Gerbera Mekar">
+    <div class="bloom-header" id="bloomHeader">
+      <span class="bloom-tag" id="bloomTag">3 Bunga Gerbera</span>
+      <h2 class="bloom-quote" id="bloomQuote">"Satu untuk setiap kata cinta yang tak pernah usang."</h2>
+    </div>
+
+    <!-- The 3 Gerbera Flowers in a Single Cluster (Satu Rumpun) SVG Container -->
+    <div class="garden-container" id="gardenContainer">
+      <!-- Warm Golden Radial Glow Aura Behind Flower Cluster -->
+      <div class="flower-glow-aura" id="flowerGlowAura" aria-hidden="true"></div>
+
+      <svg id="flowerSvg" class="flower-svg" viewBox="0 0 800 880" preserveAspectRatio="xMidYMax meet">
+        <defs>
+          <!-- WARM RADIAL GLOW FOR CLUSTER -->
+          <radialGradient id="clusterWarmGlow" cx="50%" cy="42%" r="50%">
+            <stop offset="0%" stop-color="#f8d672" stop-opacity="0.18" />
+            <stop offset="40%" stop-color="#e5ad35" stop-opacity="0.08" />
+            <stop offset="75%" stop-color="#b8831e" stop-opacity="0.02" />
+            <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+          </radialGradient>
+
+          <!-- STEM GRADIENT (EMERALD / FOREST GREEN) -->
+          <linearGradient id="stemGradEmerald" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#0c2412" />
+            <stop offset="30%" stop-color="#184a25" />
+            <stop offset="70%" stop-color="#246a36" />
+            <stop offset="100%" stop-color="#328545" />
+          </linearGradient>
+
+          <!-- LEAF GRADIENTS (EMERALD / FOREST WITH HIGHLIGHT) -->
+          <linearGradient id="leafGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#12351a" />
+            <stop offset="50%" stop-color="#21592c" />
+            <stop offset="85%" stop-color="#347d44" />
+            <stop offset="100%" stop-color="#499a5c" />
+          </linearGradient>
+          <linearGradient id="baseLeafGrad" x1="0%" y1="100%" x2="50%" y2="0%">
+            <stop offset="0%" stop-color="#0b2210" />
+            <stop offset="60%" stop-color="#174422" />
+            <stop offset="100%" stop-color="#2a6d3c" />
+          </linearGradient>
+
+          <!-- GRASS GRADIENT (LIGHTER, FRESH GREEN) -->
+          <linearGradient id="grassGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#1a4c21" />
+            <stop offset="50%" stop-color="#3c8a41" />
+            <stop offset="100%" stop-color="#6ec771" />
+          </linearGradient>
+
+          <!-- 1. WHITE GERBERA (Ivory white gading with subtle grey-blue gradient) -->
+          <linearGradient id="petalGradWhite" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#c8d3e2" />
+            <stop offset="25%" stop-color="#e8ecf2" />
+            <stop offset="65%" stop-color="#faf8f2" />
+            <stop offset="100%" stop-color="#ffffff" />
+          </linearGradient>
+          <linearGradient id="petalGradWhiteInner" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#b6c2d4" />
+            <stop offset="45%" stop-color="#e3e8f0" />
+            <stop offset="100%" stop-color="#faf8f2" />
+          </linearGradient>
+          <!-- Center Disc White: Kuning Hangat -->
+          <radialGradient id="centerGradWhite" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#d9860b" />
+            <stop offset="45%" stop-color="#f5b318" />
+            <stop offset="75%" stop-color="#fcd744" />
+            <stop offset="90%" stop-color="#fae77d" />
+            <stop offset="100%" stop-color="#d48a12" />
+          </radialGradient>
+
+          <!-- 2. BLACK GERBERA (Charcoal velvet with delicate luminous rim light) -->
+          <linearGradient id="petalGradBlack" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#0a0a0d" />
+            <stop offset="40%" stop-color="#14141a" />
+            <stop offset="80%" stop-color="#22222c" />
+            <stop offset="96%" stop-color="#323242" />
+            <stop offset="100%" stop-color="#464658" />
+          </linearGradient>
+          <linearGradient id="petalGradBlackInner" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#09090c" />
+            <stop offset="50%" stop-color="#181820" />
+            <stop offset="90%" stop-color="#2a2a38" />
+            <stop offset="100%" stop-color="#4e4e62" />
+          </linearGradient>
+          <!-- Center Disc Black: Kuning Keemasan -->
+          <radialGradient id="centerGradBlack" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#694d07" />
+            <stop offset="40%" stop-color="#b58718" />
+            <stop offset="75%" stop-color="#e2b234" />
+            <stop offset="92%" stop-color="#fce277" />
+            <stop offset="100%" stop-color="#9a710f" />
+          </radialGradient>
+
+          <!-- 3. YELLOW GERBERA (Warm sunlight honey gold) -->
+          <linearGradient id="petalGradYellow" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#cf6f06" />
+            <stop offset="30%" stop-color="#ea8f0f" />
+            <stop offset="70%" stop-color="#fac522" />
+            <stop offset="96%" stop-color="#fde052" />
+            <stop offset="100%" stop-color="#fff58b" />
+          </linearGradient>
+          <linearGradient id="petalGradYellowInner" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#b85c02" />
+            <stop offset="45%" stop-color="#df820d" />
+            <stop offset="80%" stop-color="#f7bb1e" />
+            <stop offset="100%" stop-color="#fde363" />
+          </linearGradient>
+          <!-- Center Disc Yellow: Cokelat Tua -->
+          <radialGradient id="centerGradYellow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1e0b02" />
+            <stop offset="45%" stop-color="#3a1906" />
+            <stop offset="75%" stop-color="#5c2b0c" />
+            <stop offset="92%" stop-color="#7a3d13" />
+            <stop offset="100%" stop-color="#2c1203" />
+          </radialGradient>
+
+          <!-- Drop shadow for depth -->
+          <filter id="bloomShadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.8" />
+          </filter>
+        </defs>
+
+        <!-- WARM GOLDEN RADIAL GLOW CIRCLE BEHIND BOUQUET -->
+        <circle id="clusterGlowCircle" cx="400" cy="350" r="380" fill="url(#clusterWarmGlow)" class="cluster-glow-circle" />
+
+        <!-- GROUND ROOT SHADOW / MIST -->
+        <ellipse cx="400" cy="860" rx="220" ry="20" fill="#040406" opacity="0.9" />
+
+        <!-- MAIN FLOWER CLUSTER GROUP (SWAYS AS ONE RUMPUN AFTER BLOOM) -->
+        <g id="flowerClusterGroup" class="flower-cluster-group">
+
+          <!-- ============================================== -->
+          <!-- 1. STEMS (TIGA BATANG TUMBUH NAIK DARI SATU TITIK BAWAH) -->
+          <!-- ============================================== -->
+          <g id="stemsGroup" class="stems-group">
+            <!-- Left Stem (White): curves left gracefully -->
+            <path id="stemLeft" class="stem" d="M 395 860 C 390 710, 295 540, 265 380" stroke="url(#stemGradEmerald)" stroke-width="12" stroke-linecap="round" fill="none" />
+            
+            <!-- Right Stem (Yellow): curves right gracefully -->
+            <path id="stemRight" class="stem" d="M 405 860 C 415 710, 505 530, 535 350" stroke="url(#stemGradEmerald)" stroke-width="12" stroke-linecap="round" fill="none" />
+            
+            <!-- Center Stem (Black): taller, majestic slight S-curve -->
+            <path id="stemCenter" class="stem" d="M 400 860 C 408 670, 392 450, 400 220" stroke="url(#stemGradEmerald)" stroke-width="13.5" stroke-linecap="round" fill="none" />
+          </g>
+
+          <!-- ============================================== -->
+          <!-- 2. DAUN BOTANIKAL SEPANJANG BATANG -->
+          <!-- ============================================== -->
+          <g id="stemLeavesGroup" class="stem-leaves-group">
+            <!-- Leaves Left Stem -->
+            <g class="stem-leaf" id="leafL1" style="transform-origin: 370px 705px;">
+              <path d="M 370 705 C 330 680, 260 670, 215 725 C 240 750, 310 760, 370 710 Z" fill="url(#leafGrad)" />
+              <path d="M 370 707 C 320 695, 265 700, 215 725" stroke="#5ea869" stroke-width="1.8" fill="none" opacity="0.8" />
+            </g>
+            <g class="stem-leaf" id="leafL2" style="transform-origin: 300px 520px;">
+              <path d="M 300 520 C 250 475, 190 475, 150 535 C 190 565, 255 565, 300 525 Z" fill="url(#leafGrad)" />
+              <path d="M 300 522 C 250 495, 195 505, 150 535" stroke="#5ea869" stroke-width="1.8" fill="none" opacity="0.8" />
+            </g>
+
+            <!-- Leaves Center Stem -->
+            <g class="stem-leaf" id="leafC1" style="transform-origin: 404px 625px;">
+              <path d="M 404 625 C 350 580, 290 585, 245 640 C 290 670, 355 665, 404 630 Z" fill="url(#leafGrad)" />
+              <path d="M 404 627 C 350 600, 295 610, 245 640" stroke="#5ea869" stroke-width="1.8" fill="none" opacity="0.8" />
+            </g>
+            <g class="stem-leaf" id="leafC2" style="transform-origin: 396px 470px;">
+              <path d="M 396 470 C 455 425, 515 435, 555 490 C 505 525, 445 520, 396 475 Z" fill="url(#leafGrad)" />
+              <path d="M 396 472 C 450 445, 505 455, 555 490" stroke="#5ea869" stroke-width="1.8" fill="none" opacity="0.8" />
+            </g>
+            <g class="stem-leaf" id="leafC3" style="transform-origin: 402px 340px;">
+              <path d="M 402 340 C 350 295, 305 305, 275 355 C 320 380, 365 375, 402 345 Z" fill="url(#leafGrad)" />
+              <path d="M 402 342 C 355 315, 315 325, 275 355" stroke="#5ea869" stroke-width="1.8" fill="none" opacity="0.8" />
+            </g>
+
+            <!-- Leaves Right Stem -->
+            <g class="stem-leaf" id="leafR1" style="transform-origin: 425px 705px;">
+              <path d="M 425 705 C 475 670, 545 675, 595 725 C 545 760, 480 755, 425 710 Z" fill="url(#leafGrad)" />
+              <path d="M 425 707 C 480 690, 540 695, 595 725" stroke="#5ea869" stroke-width="1.8" fill="none" opacity="0.8" />
+            </g>
+            <g class="stem-leaf" id="leafR2" style="transform-origin: 490px 515px;">
+              <path d="M 490 515 C 550 465, 620 470, 665 525 C 610 565, 545 560, 490 520 Z" fill="url(#leafGrad)" />
+              <path d="M 490 517 C 550 485, 610 495, 665 525" stroke="#5ea869" stroke-width="1.8" fill="none" opacity="0.8" />
+            </g>
+          </g>
+
+          <!-- ============================================== -->
+          <!-- 3. RUMPUN DAUN TEBAL & RUMPUT TIPIS DI DASAR -->
+          <!-- ============================================== -->
+          <!-- Thick Base Foliage (Rumpun Daun Tebal di Dasar) -->
+          <g id="baseLeavesGroup" class="base-leaves-group" style="transform-origin: 400px 860px;">
+            <!-- Left Base Leaves -->
+            <path class="base-leaf" d="M 390 860 C 310 810, 230 790, 180 750 C 235 840, 315 860, 390 860 Z" fill="url(#baseLeafGrad)" />
+            <path class="base-leaf" d="M 395 850 C 315 745, 240 710, 205 660 C 275 730, 340 760, 395 850 Z" fill="url(#baseLeafGrad)" opacity="0.95" />
+            <!-- Right Base Leaves -->
+            <path class="base-leaf" d="M 410 860 C 490 810, 570 790, 620 750 C 565 840, 485 860, 410 860 Z" fill="url(#baseLeafGrad)" />
+            <path class="base-leaf" d="M 405 850 C 485 745, 560 710, 595 660 C 525 730, 460 760, 405 850 Z" fill="url(#baseLeafGrad)" opacity="0.95" />
+            <!-- Center Low Cluster Leaves -->
+            <path class="base-leaf" d="M 395 860 C 375 770, 360 720, 350 670 C 395 745, 410 790, 395 860 Z" fill="url(#baseLeafGrad)" />
+            <path class="base-leaf" d="M 405 860 C 425 770, 440 720, 450 670 C 405 745, 390 790, 405 860 Z" fill="url(#baseLeafGrad)" />
+          </g>
+
+          <!-- Curved Slender Grass Blades (Rumput Tipis Melengkung di Dasar) -->
+          <g id="baseGrassGroup" class="base-grass-group">
+            <!-- Left Grass Blades -->
+            <path class="grass-blade" d="M 385 860 C 320 830, 220 815, 150 810" stroke="url(#grassGrad)" stroke-width="3" stroke-linecap="round" fill="none" />
+            <path class="grass-blade" d="M 390 860 C 300 785, 200 725, 130 675" stroke="url(#grassGrad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            <path class="grass-blade" d="M 380 860 C 320 785, 250 690, 200 600" stroke="url(#grassGrad)" stroke-width="2.8" stroke-linecap="round" fill="none" />
+            <path class="grass-blade" d="M 375 860 C 340 795, 290 730, 260 660" stroke="url(#grassGrad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+
+            <!-- Right Grass Blades -->
+            <path class="grass-blade" d="M 415 860 C 480 830, 580 815, 650 810" stroke="url(#grassGrad)" stroke-width="3" stroke-linecap="round" fill="none" />
+            <path class="grass-blade" d="M 410 860 C 500 785, 600 725, 670 675" stroke="url(#grassGrad)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            <path class="grass-blade" d="M 420 860 C 480 785, 550 690, 600 600" stroke="url(#grassGrad)" stroke-width="2.8" stroke-linecap="round" fill="none" />
+            <path class="grass-blade" d="M 425 860 C 460 795, 510 730, 540 660" stroke="url(#grassGrad)" stroke-width="2.2" stroke-linecap="round" fill="none" />
+          </g>
+
+          <!-- ============================================== -->
+          <!-- 4. FLOWER HEADS (3 GERBERA BLOOMING AT THE TIPS) -->
+          <!-- ============================================== -->
+
+          <!-- FLOWER 1 (LEFT): WHITE GERBERA (Putih Gading + Kuning Hangat Center) -->
+          <g id="flowerGroupLeft" class="flower-unit flower-unit-left" transform="translate(265, 380) rotate(-12)">
+            <!-- Calyx -->
+            <g id="calyxLeft" class="calyx">
+              <ellipse cx="0" cy="10" rx="22" ry="11" fill="#1b4d24" />
+              <path d="M -18 8 Q -9 -5 0 9 Q 9 -5 18 8 Z" fill="#256531" />
+            </g>
+            <!-- Head & Petals (3 Full Layers: Outer, Mid, Inner) -->
+            <g id="headLeft" class="flower-head" filter="url(#bloomShadow)">
+              <g id="petalsOuterLeft" class="petals-tier petals-outer"></g>
+              <g id="petalsMidLeft" class="petals-tier petals-mid"></g>
+              <g id="petalsInnerLeft" class="petals-tier petals-inner"></g>
+              <!-- Center Disc (Kuning Hangat Bertekstur) -->
+              <g id="centerDiscLeft" class="center-disc">
+                <circle cx="0" cy="0" r="32" fill="url(#centerGradWhite)" />
+                <circle cx="0" cy="0" r="31" fill="none" stroke="#fce277" stroke-width="1.8" opacity="0.85" stroke-dasharray="2,3" />
+                <circle cx="0" cy="0" r="22" fill="#e69c10" />
+                <circle cx="0" cy="0" r="21" fill="none" stroke="#fae77d" stroke-width="1.4" opacity="0.75" stroke-dasharray="1.5,2.5" />
+                <circle cx="0" cy="0" r="13" fill="#ad6904" />
+                <circle cx="0" cy="0" r="5" fill="#5c3600" />
+              </g>
+            </g>
+          </g>
+
+          <!-- FLOWER 3 (RIGHT): YELLOW GERBERA (Kuning Hangat + Cokelat Tua Center) -->
+          <g id="flowerGroupRight" class="flower-unit flower-unit-right" transform="translate(535, 350) rotate(14)">
+            <!-- Calyx -->
+            <g id="calyxRight" class="calyx">
+              <ellipse cx="0" cy="10" rx="22" ry="11" fill="#1b4d24" />
+              <path d="M -18 8 Q -9 -5 0 9 Q 9 -5 18 8 Z" fill="#256531" />
+            </g>
+            <!-- Head & Petals (3 Full Layers: Outer, Mid, Inner) -->
+            <g id="headRight" class="flower-head" filter="url(#bloomShadow)">
+              <g id="petalsOuterRight" class="petals-tier petals-outer"></g>
+              <g id="petalsMidRight" class="petals-tier petals-mid"></g>
+              <g id="petalsInnerRight" class="petals-tier petals-inner"></g>
+              <!-- Center Disc (Cokelat Tua Bertekstur) -->
+              <g id="centerDiscRight" class="center-disc">
+                <circle cx="0" cy="0" r="33" fill="url(#centerGradYellow)" />
+                <circle cx="0" cy="0" r="32" fill="none" stroke="#f6bd25" stroke-width="1.8" opacity="0.8" stroke-dasharray="2,3" />
+                <circle cx="0" cy="0" r="23" fill="#4a2208" />
+                <circle cx="0" cy="0" r="22" fill="none" stroke="#ea8f0f" stroke-width="1.4" opacity="0.7" stroke-dasharray="1.5,2.5" />
+                <circle cx="0" cy="0" r="14" fill="#291204" />
+                <circle cx="0" cy="0" r="6" fill="#140801" />
+              </g>
+            </g>
+          </g>
+
+          <!-- FLOWER 2 (CENTER): BLACK GERBERA (Charcoal + Luminous Gold Rim Light + Kuning Keemasan Center) -->
+          <g id="flowerGroupCenter" class="flower-unit flower-unit-center" transform="translate(400, 220)">
+            <!-- Calyx -->
+            <g id="calyxCenter" class="calyx">
+              <ellipse cx="0" cy="11" rx="25" ry="12" fill="#163f1d" />
+              <path d="M -20 9 Q -10 -6 0 10 Q 10 -6 20 9 Z" fill="#205529" />
+            </g>
+            <!-- Head & Petals (3 Full Layers: Outer, Mid, Inner) -->
+            <g id="headCenter" class="flower-head" filter="url(#bloomShadow)">
+              <g id="petalsOuterCenter" class="petals-tier petals-outer"></g>
+              <g id="petalsMidCenter" class="petals-tier petals-mid"></g>
+              <g id="petalsInnerCenter" class="petals-tier petals-inner"></g>
+              <!-- Center Disc (Kuning Keemasan Mewah) -->
+              <g id="centerDiscCenter" class="center-disc">
+                <circle cx="0" cy="0" r="36" fill="url(#centerGradBlack)" />
+                <circle cx="0" cy="0" r="35" fill="none" stroke="#fce277" stroke-width="1.8" opacity="0.9" stroke-dasharray="2,3" />
+                <circle cx="0" cy="0" r="25" fill="#a87b12" />
+                <circle cx="0" cy="0" r="24" fill="none" stroke="#fbe484" stroke-width="1.4" opacity="0.8" stroke-dasharray="1.5,2.5" />
+                <circle cx="0" cy="0" r="15" fill="#1b1b22" />
+                <circle cx="0" cy="0" r="7" fill="#d4af37" />
+              </g>
+            </g>
+          </g>
+
+        </g>
+
+        <!-- KUNANG-KUNANG / FLOATING GOLDEN FIREFLY PARTICLES OVER BOUQUET -->
+        <g id="bouquetFireflies" class="bouquet-fireflies" aria-hidden="true">
+          <!-- Dynamically spawned or styled golden specks -->
+        </g>
+      </svg>
+    </div>
+
+    <!-- Skip / Fast Forward Option -->
+    <button id="skipBloomBtn" class="btn-skip" aria-label="Lewati ke cerita">
+      Lewati animasi <span class="skip-arrow">→</span>
+    </button>
+
+    <!-- Post-bloom prompt to scroll down -->
+    <div class="scroll-cue" id="scrollCue">
+      <span class="scroll-cue-text">Gulir ke bawah untuk cerita kita</span>
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <div class="scroll-chevrons">
+        <span></span><span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================== -->
+  <!-- STEP 3: REVEAL MESSAGES & POLAROIDS STORY TIMELINE -->
+  <!-- ========================================================== -->
+  <main class="story-wrapper" id="storyWrapper">
+    <!-- Section Introduction Header -->
+    <header class="story-header reveal-on-scroll">
+      <div class="story-meta">
+        <span class="meta-pill" id="metaDuration">8 Bulan Bersama</span>
+        <span class="meta-dot">•</span>
+        <span class="meta-date" id="metaDate">Perjalanan Kita</span>
+      </div>
+      <h2 class="story-main-title">
+        Setiap detik kecil yang bikin aku bersyukur ada kamu.
+      </h2>
+      <p class="story-main-desc">
+        Dari canggungnya hari pertama, sampai akhirnya kamu jadi tempat pulang paling tenang.
+      </p>
+      <div class="divider-line"></div>
+    </header>
+
+    <!-- Timeline Cards Container (10 Story Cards generated from CONFIG) -->
+    <div class="timeline-container" id="timelineContainer">
+      <!-- Injected via JavaScript dynamically from CONFIG.messages -->
+    </div>
+  </main>
+
+  <!-- ========================================================== -->
+  <!-- STEP 4: CLOSING & CELEBRATION (Happy Birthday Grand Finale) -->
+  <!-- ========================================================== -->
+  <footer class="closing-section" id="closingSection">
+    <!-- Confetti & Stardust Canvas -->
+    <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+    <div class="closing-container reveal-on-scroll">
+      <div class="closing-crown">
+        <span class="crown-icon">👑</span>
+        <span class="closing-tag">Hari Paling Istimewa</span>
+      </div>
+
+      <h1 class="closing-birthday-title" id="closingBirthdayTitle">
+        Happy Birthday, <br class="mobile-break">
+        <span class="gold-gradient" id="closingRecipientName">Eikel</span>
+      </h1>
+
+      <div class="closing-card">
+        <div class="card-glow"></div>
+        <div class="closing-letter-body" id="closingLetterBody">
+          <!-- Final message injected from CONFIG.finalLetter -->
+        </div>
+
+        <div class="closing-signature">
+          <span class="sig-note">Dengan segenap sayang,</span>
+          <span class="sig-name" id="closingSenderName">Karin</span>
+          <span class="sig-date" id="closingDateFull">2026</span>
+        </div>
+      </div>
+
+      <!-- Interactive Actions -->
+      <div class="closing-actions">
+        <button id="sendLoveBtn" class="btn-love" aria-label="Kirim Peluk Hangat">
+          <span class="love-heart-icon">💖</span>
+          <span class="love-btn-text">Kirim Peluk Hangat</span>
+          <span class="love-count-badge" id="loveCountBadge">0</span>
+        </button>
+
+        <button id="replayBtn" class="btn-replay" aria-label="Putar Ulang dari Awal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="replay-icon">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+          </svg>
+          <span>Ulangi Perjalanan</span>
+        </button>
+      </div>
+
+      <p class="closing-footer-note">
+        Dibuat penuh cinta untuk ulang tahunmu yang ke-<span id="footerAgeNote">spesial</span>.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ========================================================== -->
+  <!-- FULLSCREEN PHOTO LIGHTBOX MODAL -->
+  <!-- ========================================================== -->
+  <div class="lightbox-modal" id="lightboxModal" aria-hidden="true" role="dialog" aria-label="Lihat Foto Detail">
+    <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightboxCloseBtn" aria-label="Tutup foto">&times;</button>
+      <div class="lightbox-image-wrap">
+        <img id="lightboxImg" src="" alt="Foto Kenangan" loading="lazy">
+      </div>
+      <div class="lightbox-caption">
+        <span class="lightbox-tag" id="lightboxTag">Bulan 1</span>
+        <h3 class="lightbox-title" id="lightboxTitle">Judul Foto</h3>
+        <p class="lightbox-desc" id="lightboxDesc">Pesan kenangan...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notice" id="toastNotice" role="alert"></div>
+
+  <!-- GSAP from CDN for silky-smooth organic flower bloom & staging -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <!-- Application Logic -->
+  <script src="js/main.js"></script>
+</body>
+</html>
