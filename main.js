@@ -20,7 +20,7 @@ const CONFIG = {
   messages: [
     {
       id: 1,
-      photo: "assets/photos/photo-01.jpg",
+      photo: "./WhatsApp Image 2026-11-02 at 7.18.40 PM (1).jpeg",
       tag: "Bulan 1 — Awal Cerita",
       title: "Waktu semuanya masih serba canggung",
       place: "Momen Awal",
@@ -28,7 +28,7 @@ const CONFIG = {
     },
     {
       id: 2,
-      photo: "assets/photos/photo-02.jpg",
+      photo: "./WhatsApp Image 2026-11-02 at 7.18.40 PM.jpeg",
       tag: "Bulan 2 — Mulai Nyaman",
       title: "Ketawa lepas pertama kita",
       place: "Momen Hangat",
@@ -36,7 +36,7 @@ const CONFIG = {
     },
     {
       id: 3,
-      photo: "assets/photos/photo-03.jpg",
+      photo: "./WhatsApp Image 2026-11-02 at 7.23.17 PM (1).jpeg",
       tag: "Bulan 3 — Kebiasaan Kecil",
       title: "Hal receh yang bikin betah",
       place: "Momen Random",
@@ -44,7 +44,7 @@ const CONFIG = {
     },
     {
       id: 4,
-      photo: "assets/photos/photo-04.jpg",
+      photo: "./WhatsApp Image 2026-11-02 at 7.23.17 PM (2).jpeg",
       tag: "Bulan 4 — Di Perjalanan",
       title: "Obrolan jalan pulang yang nggak mau buru-buru",
       place: "Di Perjalanan",
@@ -52,7 +52,7 @@ const CONFIG = {
     },
     {
       id: 5,
-      photo: "assets/photos/photo-05.jpg",
+      photo: "./WhatsApp Image 2026-11-02 at 7.23.17 PM.jpeg",
       tag: "Bulan 5 — Saling Kenal",
       title: "Wajah kamu kalau lagi fokus",
       place: "Momen Favorit",
@@ -60,7 +60,7 @@ const CONFIG = {
     },
     {
       id: 6,
-      photo: "assets/photos/photo-06.jpg",
+      photo: "./WhatsApp Image 2026-11-02 at 7.23.18 PM (1).jpeg",
       tag: "Bulan 6 — Tempat Pulang",
       title: "Rumah ternyaman sehabis hari capek",
       place: "Momen Syahdu",
@@ -68,7 +68,7 @@ const CONFIG = {
     },
     {
       id: 7,
-      photo: "assets/photos/photo-07.jpg",
+      photo: "./WhatsApp Image 2026-11-02 at 7.23.18 PM (2).jpeg",
       tag: "Bulan 7 — Belajar Dewasa",
       title: "Tumbuh bareng setiap hari",
       place: "Momen Berharga",
@@ -76,7 +76,7 @@ const CONFIG = {
     },
     {
       id: 8,
-      photo: "assets/photos/photo-08.jpg",
+      photo: "./WhatsApp Image 2026-11-02 at 7.23.18 PM.jpeg",
       tag: "Bulan 8 — Delapan Bulan",
       title: "Delapan bulan yang terasa sekejap",
       place: "Hari Ini",
@@ -84,7 +84,7 @@ const CONFIG = {
     },
     {
       id: 9,
-      photo: "assets/photos/photo-09.jpg",
+      photo: "./WhatsApp Image 2026-11-02 at 7.23.19 PM.jpeg",
       tag: "Tentang Kamu",
       title: "Yang paling aku syukuri dari kamu",
       place: "Paling Berarti",
@@ -92,7 +92,7 @@ const CONFIG = {
     },
     {
       id: 10,
-      photo: "assets/photos/photo-10.jpg",
+      photo: "./WhatsApp Image 2026-11-02 at 7.27.42 PM.jpeg",
       tag: "Puncak Hari Ini",
       title: "Selamat Ulang Tahun, Eikel!",
       place: "Spesial Hari Ini",
